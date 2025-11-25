@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import ch.fimal.CM.model.Course;
 import ch.fimal.CM.model.Participant;
 import ch.fimal.CM.service.ParticipantService;
 import jakarta.validation.Valid;
@@ -51,5 +52,10 @@ public class ParticipantController {
     @PutMapping("/{id}")
     public ResponseEntity<Participant> update(@Valid @PathVariable Long id, @Valid @RequestBody Participant updatedCours) {
         return new ResponseEntity<>(participantService.update(id, updatedCours), HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}/courses")
+    public ResponseEntity<List<Course>> getEnrolledCourses(@PathVariable Long id) {
+        return new ResponseEntity<>(participantService.getEnrolledCourses(id), HttpStatus.OK);
     }
 }

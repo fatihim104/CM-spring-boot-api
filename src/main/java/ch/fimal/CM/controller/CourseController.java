@@ -1,6 +1,7 @@
 package ch.fimal.CM.controller;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import ch.fimal.CM.model.Course;
+import ch.fimal.CM.model.Participant;
 import ch.fimal.CM.service.CourseService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -52,5 +54,15 @@ public class CourseController {
     @PutMapping("/{id}")
     public ResponseEntity<Course> update(@Valid @PathVariable Long id, @Valid @RequestBody Course updatedCours) {
         return new ResponseEntity<>(courseService.update(id, updatedCours), HttpStatus.OK);
+    }
+
+    @PutMapping("/{courseId}/participant/{participantId}")
+    public ResponseEntity<Course> enrollParticipantToCourse(@PathVariable Long courseId, @PathVariable Long participantId) {
+        return new ResponseEntity<>(courseService.addParticipantToCourse(courseId, participantId), HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}/participants")
+    public ResponseEntity<Set<Participant>> getEnrolledParticipants(@PathVariable Long id) {
+        return new ResponseEntity<>(courseService.getEnrolledParticipants(id), HttpStatus.OK);
     }
 }

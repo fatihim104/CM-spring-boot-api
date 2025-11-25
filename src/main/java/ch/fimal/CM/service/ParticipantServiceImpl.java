@@ -1,10 +1,12 @@
 package ch.fimal.CM.service;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.stereotype.Service;
 
 import ch.fimal.CM.exception.ParticipantNotFoundException;
+import ch.fimal.CM.model.Course;
 import ch.fimal.CM.model.Participant;
 import ch.fimal.CM.repository.ParticipantRepository;
 import lombok.RequiredArgsConstructor;
@@ -48,6 +50,12 @@ public class ParticipantServiceImpl implements ParticipantService {
                 return participantRepository.save(existing);
             })
             .orElseThrow(() ->new ParticipantNotFoundException(id));
+    }
+
+    @Override
+    public List<Course> getEnrolledCourses(Long id) {
+        Participant participant = getById(id);
+        return participant.getCourses();
     }
     
 }
