@@ -9,7 +9,6 @@ import ch.fimal.CM.exception.CourseNotFoundException;
 import ch.fimal.CM.model.Course;
 import ch.fimal.CM.model.Participant;
 import ch.fimal.CM.repository.CourseRepository;
-import ch.fimal.CM.repository.ParticipantRepository;
 import lombok.RequiredArgsConstructor;
 
 @Service
