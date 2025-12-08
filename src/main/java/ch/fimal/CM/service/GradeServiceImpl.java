@@ -6,7 +6,6 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import ch.fimal.CM.exception.EntityNotFoundException;
-import ch.fimal.CM.exception.GradeNotFoundException;
 import ch.fimal.CM.exception.ParticipantNotEnrolledException;
 import ch.fimal.CM.model.Course;
 import ch.fimal.CM.model.Grade;
