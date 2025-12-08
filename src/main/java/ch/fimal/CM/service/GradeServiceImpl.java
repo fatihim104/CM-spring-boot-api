@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import ch.fimal.CM.exception.EntityNotFoundException;
 import ch.fimal.CM.exception.GradeNotFoundException;
 import ch.fimal.CM.exception.ParticipantNotEnrolledException;
 import ch.fimal.CM.model.Course;
@@ -30,7 +31,6 @@ public class GradeServiceImpl implements GradeService{
     public List<Grade> getByParticipantId(Long student_id) {
         return gradeRepository.findByParticipantId(student_id);
     }
-
   
     @Override
     public Grade save(Grade grade, Long participantId, Long courseId) {
@@ -43,8 +43,6 @@ public class GradeServiceImpl implements GradeService{
 
         return gradeRepository.save(grade);
     }
-
-
 
     @Override
     public List<Grade> getByCourseId(Long courseId) {
@@ -69,7 +67,7 @@ public class GradeServiceImpl implements GradeService{
         unwrappedGrade.setPoint(grade.getPoint());
         return gradeRepository.save(unwrappedGrade);
        } else {
-        throw new GradeNotFoundException(gradeId);
+        throw new EntityNotFoundException(gradeId, Grade.class);
        }
     }
         

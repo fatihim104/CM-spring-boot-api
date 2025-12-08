@@ -5,7 +5,7 @@ import java.util.Set;
 
 import org.springframework.stereotype.Service;
 
-import ch.fimal.CM.exception.CourseNotFoundException;
+import ch.fimal.CM.exception.EntityNotFoundException;
 import ch.fimal.CM.model.Course;
 import ch.fimal.CM.model.Participant;
 import ch.fimal.CM.repository.CourseRepository;
@@ -27,7 +27,7 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public Course getById(Long id) {
         return courseRepository.findById(id)
-        .orElseThrow(() -> new CourseNotFoundException(id));
+        .orElseThrow(() -> new EntityNotFoundException(id, Course.class));
     }
     
     @Override
@@ -50,7 +50,7 @@ public class CourseServiceImpl implements CourseService {
                     existing.setStatus(updatedCourse.getStatus());
                     return courseRepository.save(existing);
                 })
-                .orElseThrow(() -> new CourseNotFoundException(id));
+                .orElseThrow(() -> new EntityNotFoundException(id, Course.class));
     }
 
     @Override

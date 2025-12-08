@@ -1,11 +1,10 @@
 package ch.fimal.CM.service;
 
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.stereotype.Service;
 
-import ch.fimal.CM.exception.ParticipantNotFoundException;
+import ch.fimal.CM.exception.EntityNotFoundException;
 import ch.fimal.CM.model.Course;
 import ch.fimal.CM.model.Participant;
 import ch.fimal.CM.repository.ParticipantRepository;
@@ -20,7 +19,7 @@ public class ParticipantServiceImpl implements ParticipantService {
     @Override
     public Participant getById(Long id) {
         return participantRepository.findById(id)
-        .orElseThrow(() -> new ParticipantNotFoundException(id));
+        .orElseThrow(() -> new EntityNotFoundException(id, Participant.class));
     }
 
     @Override
@@ -49,7 +48,7 @@ public class ParticipantServiceImpl implements ParticipantService {
                 existing.setEmail(updatedParticipant.getEmail());
                 return participantRepository.save(existing);
             })
-            .orElseThrow(() ->new ParticipantNotFoundException(id));
+            .orElseThrow(() ->new EntityNotFoundException(id, Participant.class));
     }
 
     @Override

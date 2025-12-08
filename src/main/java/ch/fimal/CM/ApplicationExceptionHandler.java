@@ -21,20 +21,16 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 
-import ch.fimal.CM.exception.CourseNotFoundException;
+import ch.fimal.CM.exception.EntityNotFoundException;
 import ch.fimal.CM.exception.ErrorResponse;
-import ch.fimal.CM.exception.GradeNotFoundException;
 import ch.fimal.CM.exception.ParticipantNotEnrolledException;
-import ch.fimal.CM.exception.ParticipantNotFoundException;
 import ch.fimal.CM.model.CourseStatus;
 
 
 @ControllerAdvice
 public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler({CourseNotFoundException.class, 
-                       ParticipantNotFoundException.class,
-                       GradeNotFoundException.class,
+    @ExceptionHandler({EntityNotFoundException.class,
                        ParticipantNotEnrolledException.class})
     public ResponseEntity<Object> handleResourceNotFoundException(RuntimeException ex) {
 
