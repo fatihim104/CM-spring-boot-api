@@ -7,12 +7,14 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 @Entity
 @Table(name = "users")
+@Data
 @RequiredArgsConstructor
 @NoArgsConstructor
 public class User {

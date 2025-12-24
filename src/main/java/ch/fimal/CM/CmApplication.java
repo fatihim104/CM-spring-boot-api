@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import ch.fimal.CM.model.Course;
 import ch.fimal.CM.model.CourseStatus;
@@ -29,7 +31,7 @@ public class CmApplication implements CommandLineRunner{
 	public void run(String... args) throws Exception {
 		Course[] courses = new Course[] {
 			new Course("English", "Zürich", LocalDate.parse(("2026-01-15")), CourseStatus.PLANNING ),
-			new Course("Math", "Luzern", LocalDate.parse(("2025-12-15")), CourseStatus.PLANNING )
+			new Course("Math", "Luzern", LocalDate.parse(("2025-12-25")), CourseStatus.PLANNING )
 		};
 
 		for(int i = 0; i<courses.length; i++) {
@@ -47,5 +49,8 @@ public class CmApplication implements CommandLineRunner{
 
 	}
 	
-
+	@Bean
+	public BCryptPasswordEncoder bCryptPasswordEncoder() {
+		return new BCryptPasswordEncoder();
+	}	
 }
