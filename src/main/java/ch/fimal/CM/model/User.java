@@ -32,7 +32,5 @@ public class User {
     @NonNull
 	@Column(nullable = false)
     private String password;
-
-   
     
 }

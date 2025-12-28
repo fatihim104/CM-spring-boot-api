@@ -31,7 +31,7 @@ public class CmApplication implements CommandLineRunner{
 	public void run(String... args) throws Exception {
 		Course[] courses = new Course[] {
 			new Course("English", "Zürich", LocalDate.parse(("2026-01-15")), CourseStatus.PLANNING ),
-			new Course("Math", "Luzern", LocalDate.parse(("2025-12-27")), CourseStatus.PLANNING )
+			new Course("Math", "Luzern", LocalDate.parse(("2026-02-27")), CourseStatus.PLANNING )
 		};
 
 		for(int i = 0; i<courses.length; i++) {
