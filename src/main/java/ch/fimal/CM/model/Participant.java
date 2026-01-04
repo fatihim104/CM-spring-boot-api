@@ -53,24 +53,18 @@ public class Participant {
 
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
-    
+
     @JsonIgnore
     @OneToMany(mappedBy = "participant", cascade = CascadeType.ALL)
     private List<Grade> grades;
 
     @JsonIgnore
     @ManyToMany
-    @JoinTable(
-        name = "course_student",
-        joinColumns = @JoinColumn(name = "participant_id", referencedColumnName = "id"),
-        inverseJoinColumns = @JoinColumn(name = "course_id", referencedColumnName = "id")
-    )
+    @JoinTable(name = "course_participant", joinColumns = @JoinColumn(name = "participant_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "course_id", referencedColumnName = "id"))
     private List<Course> courses;
 
     @PrePersist
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();
     }
-
-    
 }

@@ -15,8 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import ch.fimal.CM.model.Course;
-import ch.fimal.CM.model.Participant;
+import ch.fimal.CM.dto.CourseRequest;
+import ch.fimal.CM.dto.CourseResponse;
+import ch.fimal.CM.dto.ParticipantDto;
 import ch.fimal.CM.service.CourseService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -26,23 +27,22 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CourseController {
 
-    
     private final CourseService courseService;
 
     @GetMapping
     @ResponseBody
-    public ResponseEntity<List<Course>> getAll(){
+    public ResponseEntity<List<CourseResponse>> getAll() {
         return new ResponseEntity<>(courseService.getAll(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Course> getById(@PathVariable Long id) {
-        return new ResponseEntity<>(courseService.getById(id), HttpStatus.OK);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
+    public ResponseEntity<CourseResponse> getById(@PathVariable Long id) {
+        return new ResponseEntity<>(courseService.getById(id), HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<Course> save(@Valid @RequestBody Course course) {
-        return new ResponseEntity<>(courseService.save(course), HttpStatus.CREATED);
+    public ResponseEntity<CourseResponse> save(@Valid @RequestBody CourseRequest courseRequest) {
+        return new ResponseEntity<>(courseService.save(courseRequest), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
@@ -52,17 +52,19 @@ public class CourseController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Course> update(@Valid @PathVariable Long id, @Valid @RequestBody Course updatedCours) {
-        return new ResponseEntity<>(courseService.update(id, updatedCours), HttpStatus.OK);
+    public ResponseEntity<CourseResponse> update(@Valid @PathVariable Long id,
+            @Valid @RequestBody CourseRequest courseRequest) {
+        return new ResponseEntity<>(courseService.update(id, courseRequest), HttpStatus.OK);
     }
 
     @PutMapping("/{courseId}/participant/{participantId}")
-    public ResponseEntity<Course> enrollParticipantToCourse(@PathVariable Long courseId, @PathVariable Long participantId) {
+    public ResponseEntity<CourseResponse> enrollParticipantToCourse(@PathVariable Long courseId,
+            @PathVariable Long participantId) {
         return new ResponseEntity<>(courseService.addParticipantToCourse(courseId, participantId), HttpStatus.OK);
     }
 
     @GetMapping("/{id}/participants")
-    public ResponseEntity<Set<Participant>> getEnrolledParticipants(@PathVariable Long id) {
+    public ResponseEntity<Set<ParticipantDto>> getEnrolledParticipants(@PathVariable Long id) {
         return new ResponseEntity<>(courseService.getEnrolledParticipants(id), HttpStatus.OK);
     }
 }

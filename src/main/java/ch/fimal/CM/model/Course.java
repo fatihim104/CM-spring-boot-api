@@ -40,7 +40,7 @@ public class Course {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-    
+
     @NotBlank(message = "Name cannot be empty")
     @Size(min = 3, message = "Name is too short")
     @Column(nullable = false, length = 20)
@@ -57,7 +57,7 @@ public class Course {
     @Future(message = "Date must not be passt")
     @NonNull
     private LocalDate startDate;
-    
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     @NonNull
@@ -73,11 +73,10 @@ public class Course {
     @JsonIgnore
     @ManyToMany
     @JoinTable(name = "course_participant", 
-               joinColumns = @JoinColumn(name = "course_id", referencedColumnName = "id"),
-               inverseJoinColumns = @JoinColumn(name="student_id", referencedColumnName = "id")
-    )
+    joinColumns = @JoinColumn(name = "course_id", referencedColumnName = "id"), 
+    inverseJoinColumns = @JoinColumn(name = "participant_id", referencedColumnName = "id"))
     private Set<Participant> participants;
-    
+
     @PrePersist
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();
