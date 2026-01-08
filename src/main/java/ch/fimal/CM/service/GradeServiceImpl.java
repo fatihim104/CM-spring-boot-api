@@ -34,7 +34,7 @@ public class GradeServiceImpl implements GradeService {
 
     @Override
     public Grade save(Grade grade, Long participantId, Long courseId) {
-        Participant participant = participantService.getById(participantId);
+        Participant participant = participantService.getParticipantEntity(participantId);
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new EntityNotFoundException(courseId, Course.class));
 

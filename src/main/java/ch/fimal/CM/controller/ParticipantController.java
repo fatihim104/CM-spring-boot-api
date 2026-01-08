@@ -14,8 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import ch.fimal.CM.model.Course;
-import ch.fimal.CM.model.Participant;
+import ch.fimal.CM.dto.CourseResponse;
+import ch.fimal.CM.dto.ParticipantRequest;
+import ch.fimal.CM.dto.ParticipantResponse;
 import ch.fimal.CM.service.ParticipantService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -29,18 +30,18 @@ public class ParticipantController {
 
     @GetMapping
     @ResponseBody
-    public ResponseEntity<List<Participant>> getAll(){
+    public ResponseEntity<List<ParticipantResponse>> getAll() {
         return new ResponseEntity<>(participantService.getAll(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Participant> getById(@PathVariable Long id) {
-        return new ResponseEntity<>(participantService.getById(id), HttpStatus.OK);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
+    public ResponseEntity<ParticipantResponse> getById(@PathVariable Long id) {
+        return new ResponseEntity<>(participantService.getById(id), HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<Participant> save(@Valid @RequestBody Participant participant) {
-        return new ResponseEntity<>(participantService.save(participant), HttpStatus.CREATED);
+    public ResponseEntity<ParticipantResponse> save(@Valid @RequestBody ParticipantRequest participantRequest) {
+        return new ResponseEntity<>(participantService.save(participantRequest), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
@@ -50,12 +51,13 @@ public class ParticipantController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Participant> update(@Valid @PathVariable Long id, @Valid @RequestBody Participant updatedCours) {
-        return new ResponseEntity<>(participantService.update(id, updatedCours), HttpStatus.OK);
+    public ResponseEntity<ParticipantResponse> update(@Valid @PathVariable Long id,
+            @Valid @RequestBody ParticipantRequest participantRequest) {
+        return new ResponseEntity<>(participantService.update(id, participantRequest), HttpStatus.OK);
     }
 
     @GetMapping("/{id}/courses")
-    public ResponseEntity<List<Course>> getEnrolledCourses(@PathVariable Long id) {
+    public ResponseEntity<List<CourseResponse>> getEnrolledCourses(@PathVariable Long id) {
         return new ResponseEntity<>(participantService.getEnrolledCourses(id), HttpStatus.OK);
     }
 }

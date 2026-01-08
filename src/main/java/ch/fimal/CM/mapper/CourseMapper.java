@@ -8,12 +8,14 @@ import org.springframework.stereotype.Component;
 
 import ch.fimal.CM.dto.CourseRequest;
 import ch.fimal.CM.dto.CourseResponse;
-import ch.fimal.CM.dto.ParticipantDto;
+import ch.fimal.CM.dto.ParticipantResponse;
 import ch.fimal.CM.model.Course;
-import ch.fimal.CM.model.Participant;
+import lombok.RequiredArgsConstructor;
 
 @Component
+@RequiredArgsConstructor
 public class CourseMapper {
+    private final ParticipantMapper participantMapper;
 
     public Course toEntity(CourseRequest request) {
         Course course = new Course();
@@ -25,10 +27,10 @@ public class CourseMapper {
     }
 
     public CourseResponse toResponse(Course course) {
-        Set<ParticipantDto> participantDtos = Collections.emptySet();
+        Set<ParticipantResponse> participantResponses = Collections.emptySet();
         if (course.getParticipants() != null) {
-            participantDtos = course.getParticipants().stream()
-                    .map(this::toParticipantDto)
+            participantResponses = course.getParticipants().stream()
+                    .map(participantMapper::toSummaryResponse)
                     .collect(Collectors.toSet());
         }
 
@@ -39,16 +41,18 @@ public class CourseMapper {
                 course.getStartDate(),
                 course.getStatus(),
                 course.getCreatedAt(),
-                participantDtos);
+                participantResponses);
     }
 
-    public ParticipantDto toParticipantDto(Participant participant) {
-        return new ParticipantDto(
-                participant.getId(),
-                participant.getFirstName(),
-                participant.getLastName(),
-                participant.getEmail(),
-                participant.getBirthDate());
+    public CourseResponse toSummaryResponse(Course course) {
+        return new CourseResponse(
+                course.getId(),
+                course.getName(),
+                course.getPlace(),
+                course.getStartDate(),
+                course.getStatus(),
+                course.getCreatedAt(),
+                Collections.emptySet());
     }
 
     public void updateEntityFromRequest(Course course, CourseRequest request) {

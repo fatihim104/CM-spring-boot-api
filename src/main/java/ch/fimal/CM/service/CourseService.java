@@ -5,7 +5,7 @@ import java.util.Set;
 
 import ch.fimal.CM.dto.CourseRequest;
 import ch.fimal.CM.dto.CourseResponse;
-import ch.fimal.CM.dto.ParticipantDto;
+import ch.fimal.CM.dto.ParticipantResponse;
 
 public interface CourseService {
 
@@ -21,5 +21,5 @@ public interface CourseService {
 
     CourseResponse addParticipantToCourse(Long courseId, Long studenId);
 
-    Set<ParticipantDto> getEnrolledParticipants(Long id);
+    Set<ParticipantResponse> getEnrolledParticipants(Long id);
 }

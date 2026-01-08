@@ -8,9 +8,10 @@ import org.springframework.stereotype.Service;
 
 import ch.fimal.CM.dto.CourseRequest;
 import ch.fimal.CM.dto.CourseResponse;
-import ch.fimal.CM.dto.ParticipantDto;
+import ch.fimal.CM.dto.ParticipantResponse;
 import ch.fimal.CM.exception.EntityNotFoundException;
 import ch.fimal.CM.mapper.CourseMapper;
+import ch.fimal.CM.mapper.ParticipantMapper;
 import ch.fimal.CM.model.Course;
 import ch.fimal.CM.model.Participant;
 import ch.fimal.CM.repository.CourseRepository;
@@ -23,6 +24,7 @@ public class CourseServiceImpl implements CourseService {
     private final CourseRepository courseRepository;
     private final ParticipantService participantService;
     private final CourseMapper courseMapper;
+    private final ParticipantMapper participantMapper;
 
     @Override
     public List<CourseResponse> getAll() {
@@ -63,17 +65,17 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public CourseResponse addParticipantToCourse(Long courseId, Long participantId) {
         Course course = getCourseEntity(courseId);
-        Participant participant = participantService.getById(participantId);
+        Participant participant = participantService.getParticipantEntity(participantId);
         course.getParticipants().add(participant);
         Course savedCourse = courseRepository.save(course);
         return courseMapper.toResponse(savedCourse);
     }
 
     @Override
-    public Set<ParticipantDto> getEnrolledParticipants(Long id) {
+    public Set<ParticipantResponse> getEnrolledParticipants(Long id) {
         Course course = getCourseEntity(id);
         return course.getParticipants().stream()
-                .map(courseMapper::toParticipantDto)
+                .map(participantMapper::toResponse)
                 .collect(Collectors.toSet());
     }
 

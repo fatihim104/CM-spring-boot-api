@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import ch.fimal.CM.dto.CourseRequest;
 import ch.fimal.CM.dto.CourseResponse;
-import ch.fimal.CM.dto.ParticipantDto;
+import ch.fimal.CM.dto.ParticipantResponse;
 import ch.fimal.CM.service.CourseService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -64,7 +64,7 @@ public class CourseController {
     }
 
     @GetMapping("/{id}/participants")
-    public ResponseEntity<Set<ParticipantDto>> getEnrolledParticipants(@PathVariable Long id) {
+    public ResponseEntity<Set<ParticipantResponse>> getEnrolledParticipants(@PathVariable Long id) {
         return new ResponseEntity<>(courseService.getEnrolledParticipants(id), HttpStatus.OK);
     }
 }
