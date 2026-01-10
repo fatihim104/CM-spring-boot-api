@@ -2,14 +2,21 @@ package ch.fimal.CM.service;
 
 import java.util.List;
 
-import ch.fimal.CM.model.Grade;
+import ch.fimal.CM.dto.GradeRequest;
+import ch.fimal.CM.dto.GradeResponse;
 
 public interface GradeService {
-     List<Grade> getAll();
-     List<Grade> getByParticipantId(Long participantId);
-     List<Grade> getByCourseId(Long courseId);
-     Grade save(Grade grade, Long participantId, Long courseId);
-     List<Grade> getGrade(Long participantId, Long courseId);
+     List<GradeResponse> getAll();
+
+     List<GradeResponse> getByParticipantId(Long participantId);
+
+     List<GradeResponse> getByCourseId(Long courseId);
+
+     GradeResponse save(GradeRequest gradeRequest, Long participantId, Long courseId);
+
+     List<GradeResponse> getGrade(Long participantId, Long courseId);
+
      void deleteById(Long gradeId);
-     Grade update( Long gradeId, Grade grade);
+
+     GradeResponse update(Long gradeId, GradeRequest gradeRequest);
 }
