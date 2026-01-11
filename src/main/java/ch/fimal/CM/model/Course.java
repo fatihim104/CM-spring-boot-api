@@ -18,6 +18,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
@@ -72,10 +73,12 @@ public class Course {
 
     @JsonIgnore
     @ManyToMany
-    @JoinTable(name = "course_participant", 
-    joinColumns = @JoinColumn(name = "course_id", referencedColumnName = "id"), 
-    inverseJoinColumns = @JoinColumn(name = "participant_id", referencedColumnName = "id"))
+    @JoinTable(name = "course_participant", joinColumns = @JoinColumn(name = "course_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "participant_id", referencedColumnName = "id"))
     private Set<Participant> participants;
+
+    @ManyToOne
+    @JoinColumn(name = "instructor_id")
+    private Instructor instructor;
 
     @PrePersist
     protected void onCreate() {
