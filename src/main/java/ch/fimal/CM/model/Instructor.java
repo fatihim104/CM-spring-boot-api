@@ -7,6 +7,8 @@ import java.util.List;
 import org.hibernate.annotations.SQLRestriction;
 import org.hibernate.annotations.Where;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -61,12 +63,14 @@ public class Instructor {
   @Column(name = "created_at", nullable = false)
   private LocalDateTime createdAt;
 
+ 
   @OneToMany(mappedBy = "instructor", cascade = CascadeType.ALL)
-  @SQLRestriction("status != 'CourseStatus.PASSIVE'")
+  @SQLRestriction("status != 'FINISHED'")
   private List<Course> activeCourses;
 
+  
   @OneToMany(mappedBy = "instructor", cascade = CascadeType.ALL)
-  @SQLRestriction("status = 'CourseStatus.PASSIVE'")
+  @SQLRestriction("status = 'FINISHED'")
   private List<Course> passivCourses;
 
   @PrePersist

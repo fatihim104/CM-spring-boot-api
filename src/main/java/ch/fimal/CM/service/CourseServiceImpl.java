@@ -13,6 +13,7 @@ import ch.fimal.CM.exception.EntityNotFoundException;
 import ch.fimal.CM.mapper.CourseMapper;
 import ch.fimal.CM.mapper.ParticipantMapper;
 import ch.fimal.CM.model.Course;
+import ch.fimal.CM.model.Instructor;
 import ch.fimal.CM.model.Participant;
 import ch.fimal.CM.repository.CourseRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,7 @@ public class CourseServiceImpl implements CourseService {
 
     private final CourseRepository courseRepository;
     private final ParticipantService participantService;
+    private final InstructorService instructorService;
     private final CourseMapper courseMapper;
     private final ParticipantMapper participantMapper;
 
@@ -82,5 +84,14 @@ public class CourseServiceImpl implements CourseService {
     private Course getCourseEntity(Long id) {
         return courseRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(id, Course.class));
+    }
+
+    @Override
+    public CourseResponse assignInstructor(Long courseId, Long instructorId) {
+        Course course = getCourseEntity(courseId);
+        Instructor instructor = instructorService.getById(instructorId);
+        course.setInstructor(instructor);
+        Course savedCourse = courseRepository.save(course);
+        return courseMapper.toResponse(savedCourse);
     }
 }

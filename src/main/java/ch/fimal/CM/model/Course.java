@@ -76,6 +76,7 @@ public class Course {
     @JoinTable(name = "course_participant", joinColumns = @JoinColumn(name = "course_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "participant_id", referencedColumnName = "id"))
     private Set<Participant> participants;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "instructor_id")
     private Instructor instructor;

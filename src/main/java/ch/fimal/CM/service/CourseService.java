@@ -22,4 +22,6 @@ public interface CourseService {
     CourseResponse addParticipantToCourse(Long courseId, Long studenId);
 
     Set<ParticipantResponse> getEnrolledParticipants(Long id);
+
+    CourseResponse assignInstructor(Long courseId, Long instructorId);
 }

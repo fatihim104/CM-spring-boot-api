@@ -1,10 +1,58 @@
 package ch.fimal.CM.controller;
 
+import java.util.List;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import ch.fimal.CM.model.Instructor;
+import ch.fimal.CM.service.InstructorService;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/instructors")
+@RequiredArgsConstructor
 public class InstructorController {
+
+    private final InstructorService instructorService;
+
+    @GetMapping
+    @ResponseBody
+    public ResponseEntity<List<Instructor>> getAll() {
+        return new ResponseEntity<>(instructorService.getAll(), HttpStatus.OK);
+    }
+
+    @PostMapping
+    @ResponseBody
+    public ResponseEntity<Instructor> save(@Valid @RequestBody Instructor instuctor) {
+        return new ResponseEntity<>(instructorService.save(instuctor), HttpStatus.CREATED);
+    }
+
+    @GetMapping("/{id}")
+    @ResponseBody
+    public ResponseEntity<Instructor> getById(@PathVariable Long id) {
+        return new ResponseEntity<>(instructorService.getById(id), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<HttpStatus> delete(@PathVariable Long id) {
+        instructorService.delete(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Instructor> update(@PathVariable Long id, @Valid @RequestBody Instructor instructor){
+        return new ResponseEntity<>(instructorService.update(id, instructor), HttpStatus.OK);
+    }
 
 }
