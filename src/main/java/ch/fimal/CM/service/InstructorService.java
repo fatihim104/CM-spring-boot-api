@@ -2,12 +2,15 @@ package ch.fimal.CM.service;
 
 import java.util.List;
 
+import ch.fimal.CM.dto.InstructorRequest;
+import ch.fimal.CM.dto.InstructorResponse;
 import ch.fimal.CM.model.Instructor;
 
 public interface InstructorService {
-    List<Instructor> getAll();
-    Instructor getById(Long id);
-    Instructor save(Instructor instructor);
+    List<InstructorResponse> getAll();
+    InstructorResponse getById(Long id);
+    InstructorResponse save(InstructorRequest instructorRequest);
     void delete(Long id);
-    Instructor update(Long id, Instructor instructor);
+    InstructorResponse update(Long id, InstructorRequest instructorRequest);
+    Instructor getInstructorEntity(Long id);
 }

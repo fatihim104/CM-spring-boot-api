@@ -39,6 +39,5 @@ public class Grade {
 
     @ManyToOne(optional = true)
     @JoinColumn(name= "course_id", referencedColumnName = "id")
-    private Course course;
-    
+    private Course course; 
 }

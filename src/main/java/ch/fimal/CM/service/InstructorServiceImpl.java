@@ -1,10 +1,14 @@
 package ch.fimal.CM.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import ch.fimal.CM.dto.InstructorRequest;
+import ch.fimal.CM.dto.InstructorResponse;
 import ch.fimal.CM.exception.EntityNotFoundException;
+import ch.fimal.CM.mapper.InstructorMapper;
 import ch.fimal.CM.model.Instructor;
 import ch.fimal.CM.repository.InstructorRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,21 +18,26 @@ import lombok.RequiredArgsConstructor;
 public class InstructorServiceImpl implements InstructorService {
 
     private final InstructorRepository instructorRepository;
+    private final InstructorMapper instructorMapper;
 
     @Override
-    public List<Instructor> getAll() {
-       return instructorRepository.findAll();
+    public List<InstructorResponse> getAll() {
+       return instructorRepository.findAll().stream()
+                .map(instructorMapper::toResponse)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public Instructor getById(Long id) {
-        return instructorRepository.findById(id)
-        .orElseThrow(() -> new EntityNotFoundException(id, Instructor.class));
+    public InstructorResponse getById(Long id) {
+        Instructor instructor = getInstructorEntity(id);
+        return instructorMapper.toResponse(instructor);
     }
 
     @Override
-    public Instructor save(Instructor instructor) {
-        return instructorRepository.save(instructor);
+    public InstructorResponse save(InstructorRequest instructorRequest) {
+        Instructor instructor = instructorMapper.toEntity(instructorRequest);
+        Instructor savedInstructor = instructorRepository.save(instructor);
+        return instructorMapper.toResponse(savedInstructor);
     }
 
     @Override
@@ -40,16 +49,17 @@ public class InstructorServiceImpl implements InstructorService {
     }
 
     @Override
-    public Instructor update(Long id, Instructor instructor) {
-       Instructor existingInstructor = getById(id);
-        existingInstructor.setFirstName(instructor.getFirstName());
-        existingInstructor.setLastName(instructor.getLastName());
-        existingInstructor.setBranch(instructor.getBranch());
-        existingInstructor.setEmail(instructor.getEmail());
-        existingInstructor.setStartDate(instructor.getStartDate());
-        existingInstructor.setNationality(instructor.getNationality());
+    public InstructorResponse update(Long id, InstructorRequest instructorRequest) {
+       Instructor instructor = getInstructorEntity(id);
+       instructorMapper.updateEntityFromRequest(instructor, instructorRequest);
+       Instructor updatedInstructor = instructorRepository.save(instructor);
+        return instructorMapper.toResponse(updatedInstructor);
+    }
 
-        return instructorRepository.save(existingInstructor);
+    @Override
+    public Instructor getInstructorEntity(Long id) {
+        return instructorRepository.findById(id)
+        .orElseThrow(() -> new EntityNotFoundException(id, Instructor.class));
     }
     
 }

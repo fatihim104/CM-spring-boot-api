@@ -89,7 +89,7 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public CourseResponse assignInstructor(Long courseId, Long instructorId) {
         Course course = getCourseEntity(courseId);
-        Instructor instructor = instructorService.getById(instructorId);
+        Instructor instructor = instructorService.getInstructorEntity(instructorId);
         course.setInstructor(instructor);
         Course savedCourse = courseRepository.save(course);
         return courseMapper.toResponse(savedCourse);

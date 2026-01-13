@@ -10,7 +10,6 @@ import ch.fimal.CM.dto.CourseRequest;
 import ch.fimal.CM.dto.CourseResponse;
 import ch.fimal.CM.dto.ParticipantResponse;
 import ch.fimal.CM.model.Course;
-import ch.fimal.CM.model.Instructor;
 import lombok.RequiredArgsConstructor;
 
 @Component
@@ -35,7 +34,6 @@ public class CourseMapper {
                     .collect(Collectors.toSet());
         }
 
-        Instructor instructor = course.getInstructor();
 
         return new CourseResponse(
                 course.getId(),
@@ -45,7 +43,7 @@ public class CourseMapper {
                 course.getStatus(),
                 course.getCreatedAt(),
                 participantResponses,
-                instructor );
+                course.getInstructor() );
     }
 
     public CourseResponse toSummaryResponse(Course course) {
@@ -57,7 +55,8 @@ public class CourseMapper {
                 course.getStatus(),
                 course.getCreatedAt(),
                 Collections.emptySet(),
-                course.getInstructor());
+                null
+                );
     }
 
     public void updateEntityFromRequest(Course course, CourseRequest request) {

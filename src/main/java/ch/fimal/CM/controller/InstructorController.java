@@ -14,7 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import ch.fimal.CM.dto.InstructorRequest;
+import ch.fimal.CM.dto.InstructorResponse;
 import ch.fimal.CM.model.Instructor;
+import ch.fimal.CM.repository.InstructorRepository;
 import ch.fimal.CM.service.InstructorService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -28,19 +31,19 @@ public class InstructorController {
 
     @GetMapping
     @ResponseBody
-    public ResponseEntity<List<Instructor>> getAll() {
+    public ResponseEntity<List<InstructorResponse>> getAll() {
         return new ResponseEntity<>(instructorService.getAll(), HttpStatus.OK);
     }
 
     @PostMapping
     @ResponseBody
-    public ResponseEntity<Instructor> save(@Valid @RequestBody Instructor instuctor) {
-        return new ResponseEntity<>(instructorService.save(instuctor), HttpStatus.CREATED);
+    public ResponseEntity<InstructorResponse> save(@Valid @RequestBody InstructorRequest instuctorRequest) {
+        return new ResponseEntity<>(instructorService.save(instuctorRequest), HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
     @ResponseBody
-    public ResponseEntity<Instructor> getById(@PathVariable Long id) {
+    public ResponseEntity<InstructorResponse> getById(@PathVariable Long id) {
         return new ResponseEntity<>(instructorService.getById(id), HttpStatus.OK);
     }
 
@@ -51,8 +54,8 @@ public class InstructorController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Instructor> update(@PathVariable Long id, @Valid @RequestBody Instructor instructor){
-        return new ResponseEntity<>(instructorService.update(id, instructor), HttpStatus.OK);
+    public ResponseEntity<InstructorResponse> update(@PathVariable Long id, @Valid @RequestBody InstructorRequest instuctorRequest){
+        return new ResponseEntity<>(instructorService.update(id, instuctorRequest), HttpStatus.OK);
     }
 
 }
