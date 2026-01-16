@@ -11,7 +11,6 @@ public record InstructorResponse(
         String email,
         LocalDate startDate,
         String nationality,
-        Set<CourseResponse> activeCourses,
-        Set<CourseResponse> passivCourses
-    ) {
+        Set<CourseSummary> activeCourses,
+        Set<CourseSummary> passivCourses) {
 }

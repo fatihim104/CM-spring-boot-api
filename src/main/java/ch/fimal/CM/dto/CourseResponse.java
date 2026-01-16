@@ -5,15 +5,14 @@ import java.time.LocalDateTime;
 import java.util.Set;
 
 import ch.fimal.CM.model.CourseStatus;
-import ch.fimal.CM.model.Instructor;
 
 public record CourseResponse(
-    Long id,
-    String name,
-    String place,
-    LocalDate startDate,
-    CourseStatus status,
-    LocalDateTime createdAt,
-    Set<ParticipantResponse> participants,
-    Instructor instructor) {
+        Long id,
+        String name,
+        String place,
+        LocalDate startDate,
+        CourseStatus status,
+        LocalDateTime createdAt,
+        Set<ParticipantResponse> participants,
+        InstructorSummary instructor) {
 }

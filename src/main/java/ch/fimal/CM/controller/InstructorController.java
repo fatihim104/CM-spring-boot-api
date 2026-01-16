@@ -16,8 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import ch.fimal.CM.dto.InstructorRequest;
 import ch.fimal.CM.dto.InstructorResponse;
-import ch.fimal.CM.model.Instructor;
-import ch.fimal.CM.repository.InstructorRepository;
 import ch.fimal.CM.service.InstructorService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -54,7 +52,8 @@ public class InstructorController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<InstructorResponse> update(@PathVariable Long id, @Valid @RequestBody InstructorRequest instuctorRequest){
+    public ResponseEntity<InstructorResponse> update(@PathVariable Long id,
+            @Valid @RequestBody InstructorRequest instuctorRequest) {
         return new ResponseEntity<>(instructorService.update(id, instuctorRequest), HttpStatus.OK);
     }
 

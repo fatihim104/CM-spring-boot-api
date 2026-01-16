@@ -8,8 +8,10 @@ import org.springframework.stereotype.Component;
 
 import ch.fimal.CM.dto.CourseRequest;
 import ch.fimal.CM.dto.CourseResponse;
+import ch.fimal.CM.dto.InstructorSummary;
 import ch.fimal.CM.dto.ParticipantResponse;
 import ch.fimal.CM.model.Course;
+import ch.fimal.CM.model.Instructor;
 import lombok.RequiredArgsConstructor;
 
 @Component
@@ -34,6 +36,7 @@ public class CourseMapper {
                     .collect(Collectors.toSet());
         }
 
+        InstructorSummary instructorSummary = toInstructorSummary(course.getInstructor());
 
         return new CourseResponse(
                 course.getId(),
@@ -43,7 +46,7 @@ public class CourseMapper {
                 course.getStatus(),
                 course.getCreatedAt(),
                 participantResponses,
-                course.getInstructor() );
+                instructorSummary);
     }
 
     public CourseResponse toSummaryResponse(Course course) {
@@ -55,8 +58,7 @@ public class CourseMapper {
                 course.getStatus(),
                 course.getCreatedAt(),
                 Collections.emptySet(),
-                null
-                );
+                null);
     }
 
     public void updateEntityFromRequest(Course course, CourseRequest request) {
@@ -64,5 +66,20 @@ public class CourseMapper {
         course.setPlace(request.place());
         course.setStartDate(request.startDate());
         course.setStatus(request.status());
+    }
+
+    /**
+     * Converts Instructor entity to InstructorSummary DTO
+     * Returns null if instructor is null
+     */
+    private InstructorSummary toInstructorSummary(Instructor instructor) {
+        if (instructor == null) {
+            return null;
+        }
+        return new InstructorSummary(
+                instructor.getId(),
+                instructor.getFirstName(),
+                instructor.getLastName(),
+                instructor.getBranch());
     }
 }

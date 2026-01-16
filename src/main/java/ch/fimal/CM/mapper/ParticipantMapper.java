@@ -6,19 +6,14 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
-import ch.fimal.CM.dto.CourseResponse;
+import ch.fimal.CM.dto.CourseSummary;
 import ch.fimal.CM.dto.ParticipantRequest;
 import ch.fimal.CM.dto.ParticipantResponse;
+import ch.fimal.CM.model.Course;
 import ch.fimal.CM.model.Participant;
-import org.springframework.context.annotation.Lazy;
 
 @Component
 public class ParticipantMapper {
-  private CourseMapper courseMapper;
-
-  public ParticipantMapper(@Lazy CourseMapper courseMapper) {
-    this.courseMapper = courseMapper;
-  }
 
   public Participant toEntity(ParticipantRequest request) {
     Participant participant = new Participant();
@@ -31,13 +26,14 @@ public class ParticipantMapper {
   }
 
   public ParticipantResponse toResponse(Participant participant) {
-    Set<CourseResponse> courses = Collections.emptySet();
+    Set<CourseSummary> courses = Collections.emptySet();
 
     if (participant.getCourses() != null) {
       courses = participant.getCourses().stream()
-          .map(courseMapper::toSummaryResponse)
+          .map(this::toCourseSummary)
           .collect(Collectors.toSet());
     }
+
     return new ParticipantResponse(
         participant.getId(),
         participant.getFirstName(),
@@ -63,5 +59,20 @@ public class ParticipantMapper {
     participant.setBirthDate(request.birthDate());
     participant.setPhone(request.phone());
     participant.setEmail(request.email());
+  }
+
+  /**
+   * Converts Course entity to CourseSummary DTO
+   * Returns a lightweight course representation without instructor or
+   * participants
+   */
+  private CourseSummary toCourseSummary(Course course) {
+    return new CourseSummary(
+        course.getId(),
+        course.getName(),
+        course.getPlace(),
+        course.getStartDate(),
+        course.getStatus(),
+        course.getCreatedAt());
   }
 }
