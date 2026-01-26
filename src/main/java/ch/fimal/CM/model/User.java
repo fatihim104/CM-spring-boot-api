@@ -38,10 +38,10 @@ public class User {
     @Column(nullable = false)
     private String lastName;
 
-    @NotBlank(message = "username cannot be blank")
+    @NotBlank(message = "email cannot be blank")
     @NonNull
     @Column(nullable = false, unique = true)
-    private String username;
+    private String email;
 
     @NotBlank(message = "password cannot be blank")
     @NonNull

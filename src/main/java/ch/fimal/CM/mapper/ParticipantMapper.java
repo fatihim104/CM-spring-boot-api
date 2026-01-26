@@ -16,12 +16,13 @@ import ch.fimal.CM.model.Participant;
 public class ParticipantMapper {
 
   public Participant toEntity(ParticipantRequest request) {
-    Participant participant = new Participant();
-    participant.setFirstName(request.firstName());
-    participant.setLastName(request.lastName());
+    Participant participant = new Participant(
+        request.firstName(),
+        request.lastName(),
+        request.email(),
+        request.password(),
+        request.birthDate());
     participant.setPhone(request.phone());
-    participant.setEmail(request.email());
-    participant.setBirthDate(request.birthDate());
     return participant;
   }
 

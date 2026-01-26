@@ -12,8 +12,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import ch.fimal.CM.model.Course;
 import ch.fimal.CM.model.CourseStatus;
 import ch.fimal.CM.model.Participant;
+import ch.fimal.CM.model.User;
 import ch.fimal.CM.repository.CourseRepository;
 import ch.fimal.CM.repository.ParticipantRepository;
+import ch.fimal.CM.repository.UserRepository;
 
 @SpringBootApplication
 public class CmApplication implements CommandLineRunner {
@@ -23,6 +25,9 @@ public class CmApplication implements CommandLineRunner {
 
 	@Autowired
 	ParticipantRepository participantRepository;
+
+	@Autowired
+	UserRepository userRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(CmApplication.class, args);
@@ -40,12 +45,22 @@ public class CmApplication implements CommandLineRunner {
 		}
 
 		Participant[] participants = new Participant[] {
-				new Participant("Fatih", "Imal", "fatih@gmail.com", LocalDate.parse(("1984-12-15"))),
-				new Participant("Veli", "Dayi", "veli@gmail.com", LocalDate.parse(("1988-12-15")))
+				new Participant("Muhsin", "Imal", "mushin@gmail.com", bCryptPasswordEncoder().encode("123456"),
+						LocalDate.parse(("1990-11-15"))),
+				new Participant("Veli", "Dayi", "veli@gmail.com", bCryptPasswordEncoder().encode("123456"),
+						LocalDate.parse(("1988-12-15")))
 		};
 
 		for (int i = 0; i < participants.length; i++) {
 			participantRepository.save(participants[i]);
+		}
+
+		User[] users = new User[] {
+				new User("Fatih", "Imal", "fatih@gmail.com", "123456")
+		};
+
+		for (int i = 0; i < users.length; i++) {
+			userRepository.save(users[i]);
 		}
 
 	}

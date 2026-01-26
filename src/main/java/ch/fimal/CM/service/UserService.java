@@ -5,7 +5,7 @@ import ch.fimal.CM.model.User;
 public interface UserService {
     User getUser(Long id);
 
-    User getUser(String username);
+    User getUser(String email);
 
     User saveUser(User user);
 

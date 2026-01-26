@@ -8,11 +8,12 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 public record InstructorRequest(
-                @NotBlank(message = "First name cannot be empty") @Size(min = 3, message = "First name must be at least 3 characters long") String firstName,
-                @NotBlank(message = "Last name cannot be empty") @Size(min = 3, message = "Last name must be at least 3 characters long") String lastName,
-                @NotBlank(message = "Branch cannot be empty") String branch,
-                @NotBlank(message = "Email cannot be empty") @Email(message = "Email must be valid") String email,
-                LocalDate startDate,
-                String nationality,
-                Set<CourseResponse> courses) {
+    @NotBlank(message = "First name cannot be empty") @Size(min = 3, message = "First name must be at least 3 characters long") String firstName,
+    @NotBlank(message = "Last name cannot be empty") @Size(min = 3, message = "Last name must be at least 3 characters long") String lastName,
+    @NotBlank(message = "Branch cannot be empty") String branch,
+    @NotBlank(message = "Email cannot be empty") @Email(message = "Email must be valid") String email,
+    @NotBlank(message = "Password cannot be empty") @Size(min = 6, message = "Password must be at least 6 characters long") String password,
+    LocalDate startDate,
+    String nationality,
+    Set<CourseResponse> courses) {
 }

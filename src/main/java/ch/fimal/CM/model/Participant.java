@@ -26,24 +26,80 @@ public class Participant {
     @Column
     private Long id;
 
-    @Column(nullable = false, length = 20)
-    @NotBlank(message = "First name cannot be empty")
-    @Size(min = 3, message = "First name is too short")
-    @NonNull
-    private String firstName;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
 
-    @Column(nullable = false, length = 20)
-    @NotBlank(message = "Last name cannot be empty")
-    @Size(min = 3, message = "Last name is too short")
-    @NonNull
-    private String lastName;
+    /*
+     * @Column(nullable = false, length = 20)
+     * 
+     * @NotBlank(message = "First name cannot be empty")
+     * 
+     * @Size(min = 3, message = "First name is too short")
+     * 
+     * @NonNull
+     * private String firstName;
+     * 
+     * @Column(nullable = false, length = 20)
+     * 
+     * @NotBlank(message = "Last name cannot be empty")
+     * 
+     * @Size(min = 3, message = "Last name is too short")
+     * 
+     * @NonNull
+     * private String lastName;
+     * 
+     * @Email(message = "Invalid Email")
+     * 
+     * @NonNull
+     * private String email;
+     */
+
+    /*
+     * Temporary delegation for compatibility
+     */
+    public String getFirstName() {
+        return user != null ? user.getFirstName() : null;
+    }
+
+    public void setFirstName(String firstName) {
+        if (user == null)
+            user = new User();
+        user.setFirstName(firstName);
+    }
+
+    public String getLastName() {
+        return user != null ? user.getLastName() : null;
+    }
+
+    public void setLastName(String lastName) {
+        if (user == null)
+            user = new User();
+        user.setLastName(lastName);
+    }
+
+    public String getEmail() {
+        return user != null ? user.getEmail() : null;
+    }
+
+    public void setEmail(String email) {
+        if (user == null)
+            user = new User();
+        user.setEmail(email);
+    }
 
     @Column(nullable = true, length = 16)
     private int phone;
 
-    @Email(message = "Invalid Email")
-    @NonNull
-    private String email;
+    public Participant(String firstName, String lastName, String email, String password, LocalDate birthDate) {
+        this.user = new User();
+        this.user.setFirstName(firstName);
+        this.user.setLastName(lastName);
+        this.user.setEmail(email);
+        this.user.setPassword(password); // Will be encoded by service/repository interaction if logic exists, or needs
+                                         // explicit encoding
+        this.birthDate = birthDate;
+    }
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Past(message = "Date of birth must be in the past")

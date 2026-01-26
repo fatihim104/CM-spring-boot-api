@@ -19,10 +19,11 @@ public class InstructorServiceImpl implements InstructorService {
 
     private final InstructorRepository instructorRepository;
     private final InstructorMapper instructorMapper;
+    private final org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
     public List<InstructorResponse> getAll() {
-       return instructorRepository.findAll().stream()
+        return instructorRepository.findAll().stream()
                 .map(instructorMapper::toResponse)
                 .collect(Collectors.toList());
     }
@@ -36,13 +37,14 @@ public class InstructorServiceImpl implements InstructorService {
     @Override
     public InstructorResponse save(InstructorRequest instructorRequest) {
         Instructor instructor = instructorMapper.toEntity(instructorRequest);
+        instructor.getUser().setPassword(bCryptPasswordEncoder.encode(instructor.getUser().getPassword()));
         Instructor savedInstructor = instructorRepository.save(instructor);
         return instructorMapper.toResponse(savedInstructor);
     }
 
     @Override
     public void delete(Long id) {
-        if(!instructorRepository.existsById(id)){
+        if (!instructorRepository.existsById(id)) {
             throw new EntityNotFoundException(id, Instructor.class);
         }
         instructorRepository.deleteById(id);
@@ -50,16 +52,16 @@ public class InstructorServiceImpl implements InstructorService {
 
     @Override
     public InstructorResponse update(Long id, InstructorRequest instructorRequest) {
-       Instructor instructor = getInstructorEntity(id);
-       instructorMapper.updateEntityFromRequest(instructor, instructorRequest);
-       Instructor updatedInstructor = instructorRepository.save(instructor);
+        Instructor instructor = getInstructorEntity(id);
+        instructorMapper.updateEntityFromRequest(instructor, instructorRequest);
+        Instructor updatedInstructor = instructorRepository.save(instructor);
         return instructorMapper.toResponse(updatedInstructor);
     }
 
     @Override
     public Instructor getInstructorEntity(Long id) {
         return instructorRepository.findById(id)
-        .orElseThrow(() -> new EntityNotFoundException(id, Instructor.class));
+                .orElseThrow(() -> new EntityNotFoundException(id, Instructor.class));
     }
-    
+
 }

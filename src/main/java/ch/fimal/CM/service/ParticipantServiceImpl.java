@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import ch.fimal.CM.dto.CourseResponse;
@@ -23,6 +24,7 @@ public class ParticipantServiceImpl implements ParticipantService {
     private final ParticipantRepository participantRepository;
     private final ParticipantMapper participantMapper;
     private final CourseMapper courseMapper;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
     public ParticipantResponse getById(Long id) {
@@ -33,7 +35,9 @@ public class ParticipantServiceImpl implements ParticipantService {
 
     @Override
     public ParticipantResponse save(ParticipantRequest participantRequest) {
-        return participantMapper.toResponse(participantRepository.save(participantMapper.toEntity(participantRequest)));
+        Participant participant = participantMapper.toEntity(participantRequest);
+        participant.getUser().setPassword(bCryptPasswordEncoder.encode(participant.getUser().getPassword()));
+        return participantMapper.toResponse(participantRepository.save(participant));
     }
 
     @Override

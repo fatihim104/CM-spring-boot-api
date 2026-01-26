@@ -16,11 +16,12 @@ import ch.fimal.CM.model.Instructor;
 public class InstructorMapper {
 
     public Instructor toEntity(InstructorRequest request) {
-        Instructor instructor = new Instructor();
-        instructor.setFirstName(request.firstName());
-        instructor.setLastName(request.lastName());
-        instructor.setBranch(request.branch());
-        instructor.setEmail(request.email());
+        Instructor instructor = new Instructor(
+                request.firstName(),
+                request.lastName(),
+                request.email(),
+                request.password(),
+                request.branch());
         instructor.setStartDate(request.startDate());
         instructor.setNationality(request.nationality());
         return instructor;

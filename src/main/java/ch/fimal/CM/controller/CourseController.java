@@ -30,7 +30,6 @@ public class CourseController {
 
     private final CourseService courseService;
 
-    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     @ResponseBody
     public ResponseEntity<List<CourseResponse>> getAll() {
@@ -42,35 +41,40 @@ public class CourseController {
         return new ResponseEntity<>(courseService.getById(id), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('course:create') or hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<CourseResponse> save(@Valid @RequestBody CourseRequest courseRequest) {
         return new ResponseEntity<>(courseService.save(courseRequest), HttpStatus.CREATED);
     }
 
-    @PreAuthorize("hasAuthority('course:delete')")
+    @PreAuthorize("hasAuthority('course:delete') or hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<HttpStatus> delete(@PathVariable Long id) {
         courseService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    @PreAuthorize("hasAuthority('course:update') or hasRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<CourseResponse> update(@Valid @PathVariable Long id,
             @Valid @RequestBody CourseRequest courseRequest) {
         return new ResponseEntity<>(courseService.update(id, courseRequest), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('course:participant:add') or hasRole('ADMIN')")
     @PutMapping("/{courseId}/participant/{participantId}")
     public ResponseEntity<CourseResponse> enrollParticipantToCourse(@PathVariable Long courseId,
             @PathVariable Long participantId) {
         return new ResponseEntity<>(courseService.addParticipantToCourse(courseId, participantId), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('course:participant:read') or hasRole('ADMIN')")
     @GetMapping("/{id}/participants")
     public ResponseEntity<Set<ParticipantResponse>> getEnrolledParticipants(@PathVariable Long id) {
         return new ResponseEntity<>(courseService.getEnrolledParticipants(id), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('course:instructor:assign') or hasRole('ADMIN')")
     @PutMapping("{courseId}/instructor/{instructorId}")
     public ResponseEntity<CourseResponse> assignInstructorToCourse(@PathVariable Long courseId,
             @PathVariable Long instructorId) {

@@ -52,7 +52,7 @@ public class RefreshTokenController {
 
                 refreshTokenRepository.save(newRefreshToken);
 
-                String username = refreshToken.getUser().getUsername();
+                String username = refreshToken.getUser().getEmail();
 
                 String newAccessToken = JWT.create()
                                 .withSubject(username)

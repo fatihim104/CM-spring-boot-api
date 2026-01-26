@@ -3,6 +3,7 @@ package ch.fimal.CM.service;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -54,8 +55,19 @@ public class AuthServiceImpl implements AuthService {
     }
 
     public String generateAccessToken(User user) {
+        var authorities = user.getRoles().stream()
+                .map(role -> "ROLE_" + role.getName())
+                .collect(Collectors.toList());
+
+        // Add permissions if needed, or keep it simple with roles first.
+        // If you rely on hasAuthority('course:create'), you need permissions here too.
+        user.getRoles().forEach(role -> {
+            role.getPermissions().forEach(permission -> authorities.add(permission.getName()));
+        });
+
         return JWT.create()
-                .withSubject(user.getUsername())
+                .withSubject(user.getEmail())
+                .withClaim("authorities", authorities)
                 .withExpiresAt(new Date(System.currentTimeMillis() + SecurityConstants.ACCESS_TOKEN_EXPIRATION))
                 .sign(Algorithm.HMAC512(SecurityConstants.SECRET_KEY));
     }

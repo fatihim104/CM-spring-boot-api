@@ -25,7 +25,7 @@ public class UserController {
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<String> getUser(@PathVariable Long id) {
-        return new ResponseEntity<>(userService.getUser(id).getUsername(), HttpStatus.OK);
+        return new ResponseEntity<>(userService.getUser(id).getEmail(), HttpStatus.OK);
     }
 
     @PostMapping("/register")
