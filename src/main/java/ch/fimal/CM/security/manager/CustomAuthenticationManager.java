@@ -15,19 +15,24 @@ import lombok.AllArgsConstructor;
 @Component
 @AllArgsConstructor
 public class CustomAuthenticationManager implements AuthenticationManager {
-    
+
     private UserService userServiceImpl;
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-    
+
         User user = userServiceImpl.getUser(authentication.getName());
         if (!bCryptPasswordEncoder.matches(authentication.getCredentials().toString(), user.getPassword())) {
             throw new BadCredentialsException("You provided an incorrect password.");
         }
 
-        return new UsernamePasswordAuthenticationToken(authentication.getName(), user.getPassword());
+        var authorities = user.getRoles().stream()
+                .map(role -> new org.springframework.security.core.authority.SimpleGrantedAuthority(
+                        "ROLE_" + role.getName()))
+                .collect(java.util.stream.Collectors.toList());
+
+        return new UsernamePasswordAuthenticationToken(authentication.getName(), user.getPassword(), authorities);
     }
-    
+
 }

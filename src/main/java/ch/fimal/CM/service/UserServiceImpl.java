@@ -1,12 +1,12 @@
 package ch.fimal.CM.service;
 
-
 import java.util.Optional;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import ch.fimal.CM.exception.EntityNotFoundException;
+import ch.fimal.CM.model.Role;
 import ch.fimal.CM.model.User;
 import ch.fimal.CM.repository.UserRepository;
 import lombok.AllArgsConstructor;
@@ -16,6 +16,7 @@ import lombok.AllArgsConstructor;
 public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
+    private ch.fimal.CM.repository.RoleRepository roleRepository;
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
@@ -32,12 +33,31 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User saveUser(User user) {
-     user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-     return userRepository.save(user);
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        return userRepository.save(user);
     }
-    
+
+    @Override
+    public void addRoleToUser(Long userId, Long roleId) {
+        Optional<User> user = userRepository.findById(userId);
+        Optional<Role> role = roleRepository.findById(roleId);
+
+        if (user.isPresent() && role.isPresent()) {
+            User u = user.get();
+            u.getRoles().add(role.get());
+            userRepository.save(u);
+        } else {
+            if (user.isEmpty())
+                throw new EntityNotFoundException(userId, User.class);
+            if (role.isEmpty())
+                throw new EntityNotFoundException(roleId, Role.class);
+        }
+    }
+
     static User unwrapUser(Optional<User> entity, Long id) {
-        if (entity.isPresent()) return entity.get();
-        else throw new EntityNotFoundException(id, User.class);
+        if (entity.isPresent())
+            return entity.get();
+        else
+            throw new EntityNotFoundException(id, User.class);
     }
 }

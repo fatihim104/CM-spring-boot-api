@@ -38,6 +38,7 @@ public class ParticipantMapper {
         participant.getId(),
         participant.getFirstName(),
         participant.getLastName(),
+        participant.getPhone(),
         participant.getEmail(),
         participant.getBirthDate(),
         courses);
@@ -48,6 +49,7 @@ public class ParticipantMapper {
         participant.getId(),
         participant.getFirstName(),
         participant.getLastName(),
+        participant.getPhone(),
         participant.getEmail(),
         participant.getBirthDate(),
         Collections.emptySet());

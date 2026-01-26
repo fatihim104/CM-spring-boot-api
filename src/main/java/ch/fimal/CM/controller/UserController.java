@@ -2,6 +2,7 @@ package ch.fimal.CM.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,15 +22,16 @@ public class UserController {
 
     private final UserService userService;
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<String> getUser(@PathVariable Long id) {
         return new ResponseEntity<>(userService.getUser(id).getUsername(), HttpStatus.OK);
     }
 
     @PostMapping("/register")
-	public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
+    public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
         userService.saveUser(user);
-		return new ResponseEntity<>(HttpStatus.CREATED);
-	}
-    
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
 }

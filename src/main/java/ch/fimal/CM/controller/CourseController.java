@@ -5,6 +5,7 @@ import java.util.Set;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,6 +30,7 @@ public class CourseController {
 
     private final CourseService courseService;
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     @ResponseBody
     public ResponseEntity<List<CourseResponse>> getAll() {
@@ -45,6 +47,7 @@ public class CourseController {
         return new ResponseEntity<>(courseService.save(courseRequest), HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasAuthority('course:delete')")
     @DeleteMapping("/{id}")
     public ResponseEntity<HttpStatus> delete(@PathVariable Long id) {
         courseService.delete(id);
