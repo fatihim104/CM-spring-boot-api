@@ -52,6 +52,8 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
             }
         }
 
+        System.out.println("JWT Filter - User: " + user + ", Authorities: " + authorities);
+
         Authentication authentication = new UsernamePasswordAuthenticationToken(user, null, authorities);
         SecurityContextHolder.getContext().setAuthentication(authentication);
         filterChain.doFilter(request, response);

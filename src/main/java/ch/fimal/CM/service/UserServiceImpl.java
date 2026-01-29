@@ -34,6 +34,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public User saveUser(User user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        if (user.getRoles().isEmpty()) {
+            Role role = roleRepository.findByName("USER").get();
+            // Warning: This assumes 'USER' role exists. DataSeeder must run first.
+            // Better to handle Optional, but for now assuming it exists.
+            user.getRoles().add(role);
+        }
         return userRepository.save(user);
     }
 

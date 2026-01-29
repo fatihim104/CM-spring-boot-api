@@ -65,6 +65,9 @@ public class AuthServiceImpl implements AuthService {
             role.getPermissions().forEach(permission -> authorities.add(permission.getName()));
         });
 
+        System.out.println("Generating Token - User: " + user.getEmail() + ", Roles: " + user.getRoles()
+                + ", Generated Authorities: " + authorities);
+
         return JWT.create()
                 .withSubject(user.getEmail())
                 .withClaim("authorities", authorities)

@@ -47,7 +47,7 @@ public class CourseController {
         return new ResponseEntity<>(courseService.save(courseRequest), HttpStatus.CREATED);
     }
 
-    @PreAuthorize("hasAuthority('course:delete') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<HttpStatus> delete(@PathVariable Long id) {
         courseService.delete(id);
