@@ -25,38 +25,41 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    private final CustomAuthenticationManager customAuthenticationManager;
-    private final RefreshTokenRepository refreshTokenRepository;
-    private final UserService userService;
-    private final AuthServiceImpl authService;
+        private final CustomAuthenticationManager customAuthenticationManager;
+        private final RefreshTokenRepository refreshTokenRepository;
+        private final UserService userService;
+        private final AuthServiceImpl authService;
 
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        @Bean
+        public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-        AuthenticationFilter authenticationFilter = new AuthenticationFilter(customAuthenticationManager,
-                refreshTokenRepository, userService, authService);
-        authenticationFilter.setFilterProcessesUrl("/authenticate");
+                AuthenticationFilter authenticationFilter = new AuthenticationFilter(customAuthenticationManager,
+                                refreshTokenRepository, userService, authService);
+                authenticationFilter.setFilterProcessesUrl("/authenticate");
 
-        http
-                .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/h2-console/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, SecurityConstants.REGISTER_PATH).permitAll()
-                        .requestMatchers(HttpMethod.POST, "/authenticate").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/auth/refresh").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/auth/logout").permitAll()
-                        .anyRequest().authenticated()
+                http
+                                .authorizeHttpRequests(authorize -> authorize
+                                                .requestMatchers("/h2-console/**").permitAll()
+                                                .requestMatchers(HttpMethod.POST, SecurityConstants.REGISTER_PATH)
+                                                .permitAll()
+                                                .requestMatchers(HttpMethod.GET, "/courses").permitAll()
+                                                .requestMatchers(HttpMethod.GET, "/courses/{id}").permitAll()
+                                                .requestMatchers(HttpMethod.POST, "/authenticate").permitAll()
+                                                .requestMatchers(HttpMethod.POST, "/auth/refresh").permitAll()
+                                                .requestMatchers(HttpMethod.POST, "/auth/logout").permitAll()
+                                                .anyRequest().authenticated()
 
-                )
-                .addFilterBefore(new ExceptionHandlerFilter(), AuthenticationFilter.class)
-                .addFilter(authenticationFilter)
-                .addFilterAfter((Filter) new JWTAuthorizationFilter(), AuthenticationFilter.class)
-                .headers(headers -> headers
-                        .frameOptions(frameOptions -> frameOptions.disable()))
-                .csrf(csrf -> csrf.disable())
-                .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+                                )
+                                .addFilterBefore(new ExceptionHandlerFilter(), AuthenticationFilter.class)
+                                .addFilter(authenticationFilter)
+                                .addFilterAfter((Filter) new JWTAuthorizationFilter(), AuthenticationFilter.class)
+                                .headers(headers -> headers
+                                                .frameOptions(frameOptions -> frameOptions.disable()))
+                                .csrf(csrf -> csrf.disable())
+                                .sessionManagement(session -> session
+                                                .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
-        return http.build();
-    }
+                return http.build();
+        }
 
 }

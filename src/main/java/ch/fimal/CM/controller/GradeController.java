@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,39 +27,46 @@ public class GradeController {
 
     private final GradeService gradeService;
 
+    @PreAuthorize("hasAuthority('grade:read') or hasRole('ADMIN')")
     @GetMapping
     public ResponseEntity<List<GradeResponse>> getAll() {
         return new ResponseEntity<>(gradeService.getAll(), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('grade:read') or hasRole('ADMIN')")
     @GetMapping("/participant/{participantId}")
     public ResponseEntity<List<GradeResponse>> getParticipantsGrade(@PathVariable Long participantId) {
         return new ResponseEntity<>(gradeService.getByParticipantId(participantId), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('grade:read') or hasRole('ADMIN')")
     @GetMapping("/course/{courseId}")
     public ResponseEntity<List<GradeResponse>> getCouresGrade(@PathVariable Long courseId) {
         return new ResponseEntity<>(gradeService.getByCourseId(courseId), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('grade:read') or hasRole('ADMIN')")
     @GetMapping("/participant/{participantId}/course/{courseId}")
     public ResponseEntity<List<GradeResponse>> getGrade(@PathVariable Long participantId,
             @PathVariable Long courseId) {
         return new ResponseEntity<>(gradeService.getGrade(participantId, courseId), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('grade:manage') or hasRole('ADMIN')")
     @PostMapping("/participant/{participantId}/course/{courseId}")
     public ResponseEntity<GradeResponse> save(@Valid @RequestBody GradeRequest gradeRequest,
             @PathVariable Long participantId, @PathVariable Long courseId) {
         return new ResponseEntity<>(gradeService.save(gradeRequest, participantId, courseId), HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasAuthority('grade:manage') or hasRole('ADMIN')")
     @DeleteMapping("/{gradeId}")
     public ResponseEntity<HttpStatus> delete(@PathVariable Long gradeId) {
         gradeService.deleteById(gradeId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    @PreAuthorize("hasAuthority('grade:manage') or hasRole('ADMIN')")
     @PutMapping("/{gradeId}")
     public ResponseEntity<GradeResponse> update(@Valid @RequestBody GradeRequest gradeRequest,
             @PathVariable Long gradeId) {

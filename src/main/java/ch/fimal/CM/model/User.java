@@ -10,6 +10,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
+
+import java.util.HashSet;
 import java.util.Set;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
@@ -50,5 +52,5 @@ public class User {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
-    private Set<Role> roles = new java.util.HashSet<>();
+    private Set<Role> roles = new HashSet<>();
 }
