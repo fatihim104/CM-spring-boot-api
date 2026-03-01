@@ -46,9 +46,14 @@ public class CmApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
+		// Only insert seed data if database is empty (prevents duplicate key errors in
+		// tests)
+		if (courseRepository.count() > 0) {
+			return;
+		}
 		Course[] courses = new Course[] {
-				new Course("English", "Zürich", LocalDate.parse(("2026-02-15")), CourseStatus.PLANNING),
-				new Course("Math", "Luzern", LocalDate.parse(("2026-03-27")), CourseStatus.PLANNING)
+				new Course("English", "Zürich", LocalDate.parse(("2026-05-15")), CourseStatus.PLANNING),
+				new Course("Math", "Luzern", LocalDate.parse(("2026-06-27")), CourseStatus.PLANNING)
 		};
 
 		for (int i = 0; i < courses.length; i++) {
